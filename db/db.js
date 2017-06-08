@@ -1,4 +1,5 @@
 var promise = require('bluebird');
+var config = require('../config');
 
 var options = {
   // Initialization Options
@@ -6,7 +7,7 @@ var options = {
 };
 
 var pgp = require('pg-promise')(options);
-var connectionString = 'postgres://u7mjn9ql86sb63:p1i4dj7pduehc568jvgrh8qsi10@ec2-54-243-219-78.compute-1.amazonaws.com:5432/da34frnf9tgu15?sslmode=require&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory';
+var connectionString = config.FOLLOWER_DB_URL;
 var db = pgp(connectionString);
 
 // add query functions
