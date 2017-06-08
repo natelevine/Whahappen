@@ -6,9 +6,16 @@
   "author": "Nate Levine <nate.levine@lendup.com>",
   "license": "MIT",
   "dependencies": {
+    "babel": "^6.23.0",
     "bluebird": "^3.5.0",
+    "ejs": "^2.5.6",
     "express": "^4.15.3",
     "node": "^0.0.0",
-    "pg-promise": "^5.9.0"
+    "pg-promise": "^5.9.0",
+    "react": "^15.5.4",
+    "react-router": "^4.1.1"
+  },
+  "devDependencies": {
+    "webpack": "^2.6.1"
   }
 }
