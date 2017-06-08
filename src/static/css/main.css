@@ -1,5 +1,28 @@
-body {
+body, input, button {
   font-family: 'Open Sans', sans-serif;
+}
+body {
+  margin: 0;
+  padding: 0;
+}
+#main {
+  width: 800px;
+  margin: 0 auto;
+}
+h1 {
+  font-size: 24px;
+  margin: 0;
+  padding: 20px 0;
+  text-align: center;
+}
+#search {
+  text-align: center;
+  padding: 0 0 20px;
+}
+#results {
+  border: 1px solid #eee;
+  border-width: 1px 0;
+  min-height: 600px;
 }
 table {
   border-collapse: collapse;
@@ -24,4 +47,34 @@ h4 {
 }
 p {
   margin: 0;
+}
+
+input[type="text"] {
+  padding: 10px;
+  border: solid 1px #dcdcdc;
+  transition: box-shadow 0.3s, border 0.3s;
+  margin: 0;
+  box-shadow: none;
+  margin-right: 10px;
+}
+input[type="text"]:focus {
+  border: solid 1px #abc;
+  box-shadow: 0 0 5px 1px #def;
+  outline: none;
+}
+input[type="text"], button {
+  font-size: 16px;
+  padding: 10px;
+  border-radius: 3px;
+}
+button {
+  background: #1d6bae;
+  border: none;
+  color: white;
+}
+
+footer {
+  color: #999;
+  text-align: center;
+  padding: 20px 0;
 }

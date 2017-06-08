@@ -8,10 +8,11 @@ const searchHandler = (val) => {
 export const IndexPage = () => (
   <div className="home">
 
-    <div className="search">
+    <div id="search">
       <SearchForm searchHandler={searchHandler}/>
     </div>
 
+    <div id="results">
     <table>
       <tbody>
       <tr>
@@ -24,6 +25,7 @@ export const IndexPage = () => (
       </tr>
       </tbody>
     </table>
+    </div>
 
   </div>
 );
