@@ -85,6 +85,9 @@ button {
   border: none;
   color: white;
 }
+button:hover {
+  background: #2e4c6c;
+}
 
 footer {
   color: #999;
