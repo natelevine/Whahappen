@@ -24,13 +24,17 @@ function getUserEmail(request) {
   return db.one('select email from users where id=$1', request.params['userId']);
 }
 
-function getUserEvents(request) {
+function getUserEvents(request, time) {
+  console.log("time in query: ", time);
   var query = 'select * from events as e \
-    inner join user_distinctid_map as udm on e.distinctid=udm.distinctid \
-    where udm.user_id=$1 \
+    where e.distinctid in ( \
+      select udm.distinctid from user_distinctid_map as udm \
+      where udm.user_id = $1 \
+    ) \
+    and e.time < $2 \
     order by e.time desc \
     limit 20';
-  return events_db.any(query, request.params['userId']);
+  return events_db.any(query, [request.params['userId'], time]);
 }
 
 module.exports = {
