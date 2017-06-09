@@ -5,14 +5,14 @@ export const SearchForm = ({searchHandler}) => {
 
   return (
     <div>
-      <input ref={node => {
+      <input placeholder="Enter User ID" type="text" ref={node => {
         input = node;
       }} />
       <button onClick={() => {
         searchHandler(input.value);
         input.value = '';
       }}>
-        Search!
+        Find Out
       </button>
     </div>
   );

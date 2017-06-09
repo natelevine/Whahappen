@@ -12,15 +12,18 @@ import React from 'react';
 */
 export const FullStoryNode = ({fullstory}) => {
   return (
-    <div className="fullstory-node">
-        <h3>
-          ID: {fullstory.id}<br/>
-          Time: {fullstory.timestamp}
-        </h3>
-        <p>
-          url: {fullstory.url}
-        </p>
-    </div>
+    <tr className="fullstory-node">
+      <th>June 8</th>
+      <td className="time">{fullstory.timestamp}</td>
+      <td className="description">
+        <h4>
+          ID: {fullstory.id}
+          <p>
+            url: {fullstory.url}
+          </p>
+        </h4>
+      </td>
+    </tr>
   );
 };
 

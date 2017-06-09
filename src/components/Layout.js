@@ -4,12 +4,14 @@ import { Link } from 'react-router-dom';
 export const Layout = props => (
   <div className="app-container">
     <header>
-      Layout page header
+      <h1>
+      WhaHappen!?
+      </h1>
     </header>
     <div className="app-content">{props.children}</div>
     <footer>
       <p>
-        This is the <strong>footer</strong>
+        &copy; 2017 WhaHappen!?
       </p>
     </footer>
   </div>

@@ -7,7 +7,7 @@ const dummyData = [
     type: 'note',
     id: 12345,
     timestamp: "2/7/18 11:11",
-    message: "Hello this is a note"
+    message: "On the site, here's some metadata about the event and it's probably really long and verbose so let's be real about that"
   },
   {
     type: 'fullstory',
@@ -30,13 +30,11 @@ const searchHandler = (val) => {
 
 export const IndexPage = () => (
   <div className="home">
-    IndexPage
-    <div>
+
+    <div id="search">
       <SearchForm searchHandler={searchHandler}/>
     </div>
-    <div>
-      <Timeline data={dummyData}/>
-    </div>
+    <Timeline data={dummyData}/>
   </div>
 );
 

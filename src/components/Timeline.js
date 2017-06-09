@@ -28,7 +28,15 @@ export const Timeline = ({data}) => {
     }
   });
 
-  return (<ul>{nodes}</ul>);
+  return (
+    <div id="results">
+      <table>
+        <tbody>
+          {nodes}
+        </tbody>
+      </table>
+    </div>
+  );
 };
 
 export default Timeline;

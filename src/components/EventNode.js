@@ -13,16 +13,19 @@ import React from 'react';
 */
 export const EventNode = ({event}) => {
   return (
-    <div className="event-node">
-        <h3>
+    <tr className="event-node">
+      <th>June 8</th>
+      <td className="time">{event.timestamp}</td>
+      <td className="description">
+        <h4>
           ID: {event.id}<br/>
-          Time: {event.timestamp}<br/>
           Event: {event.eventName}
-        </h3>
-        <p>
-          {event.properties}
-        </p>
-    </div>
+          <p>
+            {event.properties}
+          </p>
+        </h4>
+      </td>
+    </tr>
   );
 };
 
