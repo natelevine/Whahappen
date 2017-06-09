@@ -37,7 +37,7 @@ function mapEventsToDisplayFormat(eventData) {
       id: entry.id,
       eventName: entry.name,
       timestamp: moment(entry.time),
-      properties: JSON.stringify(hstore.parse(entry.properties)).substring(0, 60) + "..."
+      properties: JSON.stringify(hstore.parse(entry.properties)).substring(0, 80) + "..."
     }
   });
   return mappedArray;
