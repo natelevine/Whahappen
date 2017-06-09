@@ -1,41 +1,39 @@
 import React from 'react';
 import SearchForm from './SearchForm';
 import Timeline from './Timeline';
+import axios from 'axios';
 
-const dummyData = [
-  {
-    type: 'note',
-    id: 12345,
-    timestamp: "2/7/18 11:11",
-    message: "On the site, here's some metadata about the event and it's probably really long and verbose so let's be real about that"
-  },
-  {
-    type: 'fullstory',
-    id: 12346,
-    timestamp: "2/7/18 1:51",
-    url: "fullstory.com/thisisafullstory"
-  },
-  {
-    type: 'event',
-    id: 12347,
-    timestamp: "2/8/18 4:56",
-    eventName: "login",
-    properties: ["these", "are", "some", "properties"]
+export class IndexPage extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      timelineData: []
+    }
+    this.apiUrl = 'http://localhost:9999/api/data/';
   }
-];
 
-const searchHandler = (val) => {
-  console.log("Handler triggered! val: " + val);
+  searchHandler(userId) {
+    console.log("Handler triggered! val: " + userId);
+    console.log("apiURL: ", this.apiUrl);
+    axios.get(this.apiUrl + userId)
+      .then((res) => {
+        console.log("response from api call: ", res);
+        this.state.timelineData = res.data;
+        this.setState({timelineData: this.state.timelineData});
+      })
+  }
+
+  render() {
+
+    return (
+      <div className="home">
+
+      <div id="search">
+      <SearchForm searchHandler={this.searchHandler.bind(this)}/>
+      </div>
+      <Timeline data={this.state.timelineData}/>
+      </div>
+    );
+  }
 }
-
-export const IndexPage = () => (
-  <div className="home">
-
-    <div id="search">
-      <SearchForm searchHandler={searchHandler}/>
-    </div>
-    <Timeline data={dummyData}/>
-  </div>
-);
-
-export default IndexPage;
