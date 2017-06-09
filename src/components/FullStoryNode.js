@@ -16,9 +16,9 @@ export const FullStoryNode = ({fullstory}) => {
       <th>{fullstory.date}</th>
       <td className="time">{fullstory.timestamp}</td>
       <td className="description">
-        <h4>ID: {fullstory.id}</h4>
+        <h4>User Session <span>&bull; X min, Y events</span></h4>
           <p>
-            url: {fullstory.url}
+            <a href={fullstory.url}>Play session</a>
           </p>
       </td>
     </tr>

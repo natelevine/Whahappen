@@ -18,13 +18,26 @@ function mapFullStoriesToDisplayFormat(fullStoryData) {
 function mapNotesToDisplayFormat(noteData) {
   console.log("mapping notedata");
   var mappedArray = _.map(noteData, function(entry) {
-    return {
-      type: 'note',
-      id: entry.id,
-      author: entry.author,
-      message: entry.message,
-      timestamp: moment(entry.createdate)
-    }
+
+      var note = {
+        type: 'note',
+        id: entry.id,
+        author: entry.author,
+        message: entry.message,
+        timestamp: moment(entry.createdate)
+      }
+
+      if(entry.message.includes("Sent Email")) {
+          note.id2 = 'sent'
+      }
+      if(entry.message.includes("Viewed Profile")) {
+          note.id2 = 'view'
+      }
+      if(entry.message.includes("Comment")) {
+          note.id2 = 'comment'
+      }
+
+    return note;
   });
   return mappedArray;
 }
@@ -61,7 +74,7 @@ function interleaveByDate(nestedArray) {
 
 function addFormattedDates(array) {
   return _.map(array, function(element) {
-    element.date = element.timestamp.format("MMMM Do YYYY");
+    element.date = element.timestamp.format("MMMM Do");
     element.timestamp = element.timestamp.format("h:mma");
     return element;
   })
