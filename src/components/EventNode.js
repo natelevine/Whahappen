@@ -17,13 +17,11 @@ export const EventNode = ({event}) => {
       <th>June 8</th>
       <td className="time">{event.timestamp}</td>
       <td className="description">
-        <h4>
-          ID: {event.id}<br/>
-          Event: {event.eventName}
+        <h4>ID: {event.id}</h4>
+          <p>Event: {event.eventName}</p>
           <p>
             {event.properties}
           </p>
-        </h4>
       </td>
     </tr>
   );

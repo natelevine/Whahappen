@@ -17,12 +17,10 @@ export const NoteNode = ({note}) => {
       <th>June 8</th>
       <td className="time">{note.timestamp}</td>
       <td className="description">
-        <h4>
-          Something happened
+        <h4>Something happened</h4>
           <p>
             {note.message}
           </p>
-        </h4>
       </td>
     </tr>
   );
