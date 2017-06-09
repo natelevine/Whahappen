@@ -2,40 +2,39 @@ var promise = require('bluebird');
 var config = require('../configs/config');
 
 var options = {
-  // Initialization Options
   promiseLib: promise
 };
 
 var pgp = require('pg-promise')(options);
+// Connect to chartio follower db
 var connectionString = config.FOLLOWER_DB_URL;
 var db = pgp(connectionString);
 
+// Connect to events follower
+var eventsConnectionString = config.EVENTS_FOLLOWER_DB_URL;
+var events_db = pgp(eventsConnectionString);
+
 // add query functions
-function testQuery(req, res, next) {
-  db.any('select * from notes limit 10')
-    .then(function (data) {
-      res.status(200)
-        .json({
-          status: 'success',
-          data: data,
-        });
-    })
-    .catch(function (err) {
-      return next(err);
-    });
-}
-
 function getUserNotes(request) {
-  return db.any('select * from notes where user_id=$1 limit 10', request.params['userId']);
+  return db.any('select * from notes where user_id=$1 order by createdate desc limit 10', request.params['userId']);
 }
 
-// returns an object with key "email" and value {user'sEmail}
+// returns an object with key "email" and value {usersEmail}
 function getUserEmail(request) {
   return db.one('select email from users where id=$1', request.params['userId']);
+}
+
+function getUserEvents(request) {
+  var query = 'select * from events as e \
+    inner join user_distinctid_map as udm on e.distinctid=udm.distinctid \
+    where udm.user_id=$1 \
+    order by e.time desc \
+    limit 20';
+  return events_db.any(query, request.params['userId']);
 }
 
 module.exports = {
   getUserEmail: getUserEmail,
   getUserNotes: getUserNotes,
-  testQuery: testQuery
+  getUserEvents: getUserEvents
 };

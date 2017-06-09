@@ -21,6 +21,27 @@ app.set('views', path.join(__dirname, 'views'));
 // define the folder that will be used for static assets
 app.use(Express.static(path.join(__dirname, 'static')));
 
+app.get('/api/events/:userId', (req, res) => {
+  db.getUserEvents(req).then((data) => {
+    res.status(200).send(data);
+  })
+})
+
+app.get('/api/notes/:userId', (req, res) => {
+  db.getUserNotes(req).then((data) => {
+    res.status(200).send(data);
+  })
+})
+
+app.get('/api/fullstory/:userId', (req, res) => {
+  db.getUserEmail(req).then((emailObj) => {
+    console.log("got user email: ", emailObj.email);
+    fetchFullStories(emailObj.email).then((data) => {
+      res.status(200).send(data);
+    })
+  })
+})
+
 app.get('/api/data/:userId', (req, res) => {
 
     let returnData = {};
@@ -38,11 +59,19 @@ app.get('/api/data/:userId', (req, res) => {
         promiseArray.push(userNotesPromise);
         console.log("pushed userNotesPromise to array");
 
+        let eventsPromise = db.getUserEvents(req);
+        promiseArray.push(eventsPromise);
+        console.log("pushed eventsPromise to array");
+
         Promise.all(promiseArray).then((resolvedDataArray) => {
           console.log("resolved promises, now mapping, resolved array: ", resolvedDataArray);
-          let returnArray = utils.mapFullStoriesToDisplayFormat(resolvedDataArray[0]).concat(utils.mapNotesToDisplayFormat(resolvedDataArray[1]))
-          console.log("got mapped returnArray: ", returnArray);
-          res.status(200).send(returnArray);
+
+          let nestedReturnArray = [];
+          nestedReturnArray.push(utils.mapFullStoriesToDisplayFormat(resolvedDataArray[0]));
+          nestedReturnArray.push(utils.mapNotesToDisplayFormat(resolvedDataArray[1]));
+          nestedReturnArray.push(utils.mapEventsToDisplayFormat(resolvedDataArray[2]));
+
+          res.status(200).send(utils.interleaveByDate(nestedReturnArray));
         });
     });
     /*
@@ -66,6 +95,15 @@ app.get('/api/data/:userId', (req, res) => {
       }
 
     //3. get events
+      {
+        "id":"26331492",
+        "distinctid":"9d6cf3fe-ccb0-440e-8977-c61c1f3a8da2",
+        "ip":null,
+        "name":"mail_sent",
+        "properties":"\"template\"=>\"comeback.incomplete.3hr\"",
+        "time":"2014-01-24T23:59:03.046Z",
+        "user_id":"2664007"
+      }
     // parse and combine
     */
 
@@ -73,21 +111,21 @@ app.get('/api/data/:userId', (req, res) => {
     // res.status(200).send(returnData);
 });
 
-const fullStoryRequestOptions = {
+const fetchFullStories = (userEmail) => {
+  const fullStoryRequestOptions = {
     uri: 'https://www.fullstory.com/api/v1/sessions?email=',
     headers: {
       'Authorization': 'Basic ' + config.FULLSTORY_API_KEY
     },
     json: true
-}
-
-const fetchFullStories = (userEmail) => {
+  }
+  
   if (!userEmail) {
     return [];
   }
   // Complete the uri with the user's email as a parameter
   fullStoryRequestOptions['uri'] += userEmail;
-  console.log("fetching fullstories for user: ", userEmail);
+  console.log("fetching fullstories for user with url: ", fullStoryRequestOptions.uri);
   return rp(fullStoryRequestOptions).promise();
 }
 
