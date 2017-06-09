@@ -10,7 +10,6 @@ export const SearchForm = ({searchHandler}) => {
       }} />
       <button onClick={() => {
         searchHandler(input.value);
-        input.value = '';
       }}>
         Find Out
       </button>

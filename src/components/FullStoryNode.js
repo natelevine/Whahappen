@@ -16,12 +16,10 @@ export const FullStoryNode = ({fullstory}) => {
       <th>June 8</th>
       <td className="time">{fullstory.timestamp}</td>
       <td className="description">
-        <h4>
-          ID: {fullstory.id}
+        <h4>ID: {fullstory.id}</h4>
           <p>
             url: {fullstory.url}
           </p>
-        </h4>
       </td>
     </tr>
   );
