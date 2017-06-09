@@ -7,6 +7,7 @@ import { StaticRouter as Router } from 'react-router-dom';
 import { App } from './components/App';
 var rp = require('request-promise');
 var db = require('./db/db');
+var _ = require('underscore');
 import moment from 'moment';
 import config from './configs/config';
 import utils from './util/utils';
@@ -52,27 +53,48 @@ app.get('/api/data/:userId', (req, res) => {
     db.getUserEmail(req).then((emailObj) => {
         console.log("got user email");
         let fullStoryPromise = fetchFullStories(emailObj.email);
-        promiseArray.push(fullStoryPromise);
-        console.log("pushed fullstoryPromise to array");
+        let eventsPerFullStoryPromiseArray = [];
+        fullStoryPromise.then((fullStoryData) => {
 
-        let userNotesPromise = db.getUserNotes(req);
-        promiseArray.push(userNotesPromise);
-        console.log("pushed userNotesPromise to array");
+          let userNotesPromise = db.getUserNotes(req);
+          eventsPerFullStoryPromiseArray.push(userNotesPromise);
+          console.log("pushed userNotesPromise to array");
 
-        let eventsPromise = db.getUserEvents(req);
-        promiseArray.push(eventsPromise);
-        console.log("pushed eventsPromise to array");
+          _.each(fullStoryData, function(element) {
+            var time = moment.unix(element.CreatedTime).toDate();
+            eventsPerFullStoryPromiseArray.push(db.getUserEvents(req, time))
+          });
 
-        Promise.all(promiseArray).then((resolvedDataArray) => {
-          console.log("resolved promises, now mapping, resolved array: ", resolvedDataArray);
+          Promise.all(eventsPerFullStoryPromiseArray).then((resolvedDataArray) => {
+            let nestedReturnArray = [];
+            nestedReturnArray.push(utils.mapFullStoriesToDisplayFormat(fullStoryData));
+            nestedReturnArray.push(utils.mapNotesToDisplayFormat(resolvedDataArray.shift()));
+            nestedReturnArray.push(utils.mapEventsToDisplayFormat(_.flatten(resolvedDataArray)));
 
-          let nestedReturnArray = [];
-          nestedReturnArray.push(utils.mapFullStoriesToDisplayFormat(resolvedDataArray[0]));
-          nestedReturnArray.push(utils.mapNotesToDisplayFormat(resolvedDataArray[1]));
-          nestedReturnArray.push(utils.mapEventsToDisplayFormat(resolvedDataArray[2]));
+            res.status(200).send(utils.interleaveByDate(nestedReturnArray));
+          })
 
-          res.status(200).send(utils.interleaveByDate(nestedReturnArray));
+
         });
+        // promiseArray.push(fullStoryPromise);
+        // console.log("pushed fullstoryPromise to array");
+
+
+
+        // let eventsPromise = db.getUserEvents(req);
+        // promiseArray.push(eventsPromise);
+        // console.log("pushed eventsPromise to array");
+        //
+        // Promise.all(promiseArray).then((resolvedDataArray) => {
+        //   console.log("resolved promises, now mapping, resolved array: ", resolvedDataArray);
+        //
+        //   let nestedReturnArray = [];
+        //   nestedReturnArray.push(utils.mapFullStoriesToDisplayFormat(resolvedDataArray[0]));
+        //   nestedReturnArray.push(utils.mapNotesToDisplayFormat(resolvedDataArray[1]));
+        //   nestedReturnArray.push(utils.mapEventsToDisplayFormat(resolvedDataArray[2]));
+        //
+        //   res.status(200).send(utils.interleaveByDate(nestedReturnArray));
+        // });
     });
     /*
     //1. get fullstories
@@ -119,7 +141,7 @@ const fetchFullStories = (userEmail) => {
     },
     json: true
   }
-  
+
   if (!userEmail) {
     return [];
   }
