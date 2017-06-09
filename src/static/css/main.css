@@ -31,7 +31,7 @@ table {
 td, th {
   text-align: left;
   vertical-align: top;
-  padding-bottom: 10px;
+  padding-bottom: 40px;
 }
 th {
   width: 100px;
@@ -43,8 +43,20 @@ td.description {
   border-left: 3px solid #222;
   padding-left: 30px;
 }
+.fullstory-node td.description {
+    background-image: linear-gradient(-180deg, rgba(221,246,187,0.25) 0%, rgba(255,255,255,0.25) 100%);
+    border-right: 4px solid #B8E986;
+}
+p.comment {
+    padding-top: 20px;
+    color: gray;
+}
+
 h4 {
   margin: 0;
+}
+h4 span {
+    font-weight: normal;
 }
 p {
   margin: 0;
