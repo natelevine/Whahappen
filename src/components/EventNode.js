@@ -14,14 +14,16 @@ import React from 'react';
 export const EventNode = ({event}) => {
   return (
     <tr className="event-node">
-      <th>June 8</th>
+      <th>{event.date}</th>
       <td className="time">{event.timestamp}</td>
       <td className="description">
-        <h4>ID: {event.id}</h4>
-          <p>Event: {event.eventName}</p>
+        <h4>
+          ID: {event.id}<br/>
+          Event: {event.eventName}
           <p>
             {event.properties}
           </p>
+        </h4>
       </td>
     </tr>
   );

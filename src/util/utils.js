@@ -55,8 +55,16 @@ function interleaveByDate(nestedArray) {
       return 0;
     }
   });
-  return interleavedArray;
+  return addFormattedDates(interleavedArray);
   //.format("MMMM Do YYYY, h:mm:ssa")
+}
+
+function addFormattedDates(array) {
+  return _.map(array, function(element) {
+    element.date = element.timestamp.format("MMMM Do YYYY");
+    element.timestamp = element.timestamp.format("h:mma");
+    return element;
+  })
 }
 
 module.exports = {

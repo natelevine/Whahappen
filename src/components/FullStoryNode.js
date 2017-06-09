@@ -13,7 +13,7 @@ import React from 'react';
 export const FullStoryNode = ({fullstory}) => {
   return (
     <tr className="fullstory-node">
-      <th>June 8</th>
+      <th>{fullstory.date}</th>
       <td className="time">{fullstory.timestamp}</td>
       <td className="description">
         <h4>ID: {fullstory.id}</h4>

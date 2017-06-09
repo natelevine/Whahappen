@@ -14,7 +14,7 @@ import React from 'react';
 export const NoteNode = ({note}) => {
   return (
     <tr className="note-node">
-      <th>June 8</th>
+      <th>{note.date}</th>
       <td className="time">{note.timestamp}</td>
       <td className="description">
         <h4>Something happened</h4>
