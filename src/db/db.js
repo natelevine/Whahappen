@@ -25,6 +25,17 @@ function testQuery(req, res, next) {
     });
 }
 
+function getUserNotes(request) {
+  return db.any('select * from notes where user_id=$1 limit 10', request.params['userId']);
+}
+
+// returns an object with key "email" and value {user'sEmail}
+function getUserEmail(request) {
+  return db.one('select email from users where id=$1', request.params['userId']);
+}
+
 module.exports = {
+  getUserEmail: getUserEmail,
+  getUserNotes: getUserNotes,
   testQuery: testQuery
 };
